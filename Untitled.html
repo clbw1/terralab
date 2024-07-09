@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Nota</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Formulário de Nota</h2>
+        <form id="notaForm">
+            <div class="form-group">
+                <label for="codigoLoja">Código da Loja</label>
+                <input type="text" class="form-control" id="codigoLoja" placeholder="Digite o código da loja" required>
+                <div class="error" id="codigoLojaError"></div>
+            </div>
+            <div class="form-group">
+                <label for="valorTotalNota">Valor Total da Nota</label>
+                <input type="text" class="form-control" id="valorTotalNota" placeholder="Digite o valor total da nota" required>
+            </div>
+            <div class="form-group">
+                <label for="valorDesconto">Valor do Desconto</label>
+                <input type="text" class="form-control" id="valorDesconto" placeholder="Digite o valor do desconto" required>
+            </div>
+            <div class="form-group">
+                <label for="codigoCupom">Código do Cupom</label>
+                <input type="text" class="form-control" id="codigoCupom" placeholder="Digite o código do cupom" required>
+                <div class="error" id="codigoCupomError"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- JavaScript para validação -->
+    <script>
+        document.getElementById('notaForm').addEventListener('submit', function(event) {
+            let isValid = true;
+            
+            // Validação do Código da Loja
+            const codigoLoja = document.getElementById('codigoLoja').value;
+            const codigoLojaError = document.getElementById('codigoLojaError');
+            if (!/^\d{3}$/.test(codigoLoja)) {
+                codigoLojaError.textContent = 'Código da Loja deve ter exatamente 3 dígitos.';
+                isValid = false;
+            } else {
+                codigoLojaError.textContent = '';
+            }
+
+            // Validação do Código do Cupom
+            const codigoCupom = document.getElementById('codigoCupom').value;
+            const codigoCupomError = document.getElementById('codigoCupomError');
+            if (!/^\d{5}$/.test(codigoCupom)) {
+                codigoCupomError.textContent = 'Código do Cupom deve ter exatamente 5 dígitos.';
+                isValid = false;
+            } else {
+                codigoCupomError.textContent = '';
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
