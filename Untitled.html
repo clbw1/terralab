@@ -51,27 +51,60 @@
             var valorDesconto = document.getElementById('valorDesconto').value;
             var codigoCupom = document.getElementById('codigoCupom').value;
 
-            fetch('https://script.google.com/macros/s/1XAiR0PQmDr-t60wvR_RU4IYmGlxxJiNjQxD6bKZIGKL8TKx7q9z-q2FV/exec', {
-                method: 'Post',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'codigoLoja=' + encodeURIComponent(codigoLoja) +
-                      '&valorTotalNota=' + encodeURIComponent(valorTotalNota) +
-                      '&valorDesconto=' + encodeURIComponent(valorDesconto) +
-                      '&codigoCupom=' + encodeURIComponent(codigoCupom)
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log('Dados enviados com sucesso:', data);
-                alert('Dados enviados com sucesso!');
-                // Redirecionar ou limpar o formulário após o envio
-                document.getElementById('notaForm').reset();
-            })
-            .catch(error => {
-                console.error('Erro ao enviar dados:', error);
-                alert('Erro ao enviar dados. Por favor, tente novamente.');
-            });
+            // Validação dos campos
+            var isValid = true;
+
+            if (codigoLoja.length !== 3 || isNaN(codigoLoja)) {
+                document.getElementById('codigoLojaError').textContent = 'Código da loja deve ter exatamente 3 dígitos numéricos.';
+                isValid = false;
+            } else {
+                document.getElementById('codigoLojaError').textContent = '';
+            }
+
+            if (isNaN(valorTotalNota) || !/^\d+(\.\d{1,2})?$/.test(valorTotalNota)) {
+                document.getElementById('valorTotalNotaError').textContent = 'Valor total da nota deve ser um número com até duas casas decimais.';
+                isValid = false;
+            } else {
+                document.getElementById('valorTotalNotaError').textContent = '';
+            }
+
+            if (isNaN(valorDesconto) || !/^\d+(\.\d{1,2})?$/.test(valorDesconto)) {
+                document.getElementById('valorDescontoError').textContent = 'Valor do desconto deve ser um número com até duas casas decimais.';
+                isValid = false;
+            } else {
+                document.getElementById('valorDescontoError').textContent = '';
+            }
+
+            if (codigoCupom.length !== 5 || isNaN(codigoCupom)) {
+                document.getElementById('codigoCupomError').textContent = 'Código do cupom deve ter exatamente 5 dígitos numéricos.';
+                isValid = false;
+            } else {
+                document.getElementById('codigoCupomError').textContent = '';
+            }
+
+            if (isValid) {
+                fetch('https://script.google.com/macros/s/1XAiR0PQmDr-t60wvR_RU4IYmGlxxJiNjQxD6bKZIGKL8TKx7q9z-q2FV/exec', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'codigoLoja=' + encodeURIComponent(codigoLoja) +
+                          '&valorTotalNota=' + encodeURIComponent(valorTotalNota) +
+                          '&valorDesconto=' + encodeURIComponent(valorDesconto) +
+                          '&codigoCupom=' + encodeURIComponent(codigoCupom)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Dados enviados com sucesso:', data);
+                    alert('Dados enviados com sucesso!');
+                    // Redirecionar ou limpar o formulário após o envio
+                    document.getElementById('notaForm').reset();
+                })
+                .catch(error => {
+                    console.error('Erro ao enviar dados:', error);
+                    alert('Erro ao enviar dados. Por favor, tente novamente.');
+                });
+            }
         });
     </script>
 </body>
